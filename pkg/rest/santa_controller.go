@@ -30,7 +30,11 @@ func NewSantaController(
 
 	// Snapshot Endpoints
 	router.members.GET("/members/:id", c.GetMember)
+	router.members.GET("/members/", c.ListMembers)
 	router.members.POST("/members", c.AddMember)
+	router.members.PUT("/members/:id", c.EditMember)
+	router.members.DELETE("/members/:id", c.DeleteMember)
+	//router.excange.GET("/gift_exchange/", c.GetGiftExchange)
 
 	return c
 }

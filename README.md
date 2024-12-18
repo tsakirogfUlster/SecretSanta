@@ -39,7 +39,8 @@ Authentication (AuthN) Enhancements :
   Use secure hashing algorithms such as bcrypt or Argon2 for storing passwords if custom login functionality is introduced.
   Enforce strong password policies for additional security.
 * Rate limiter: Maybe in the future if a secrewt santa goes public we need a rate limiter to mitigate attacks
-Authorization (AuthZ) Enhancements
-* Role-Based Access Control, like admins to add/delete members
+
+* Authorization (AuthZ) Enhancements
+* Role-Based Access Control, like admins to add/delete members, or someone to be have the right to shuffle
 * Token Scopes and Permissions
   Use OAuth2 scopes to define permissions for each token
