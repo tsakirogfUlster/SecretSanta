@@ -5,7 +5,7 @@ secure coding and scalability are also important. I'll try to cover all the addi
 
 The initial thoughts was to have a serverless solution. It would be fast and also with AWS (for example) and API gateway you get throttling and other security features for free. Also maintenance cost is very low.
 However, this plan wouldn't prove my efficiency to create a scalable, service written in Go from scratch.
-![](C:\Users\tsaki\GolandProjects\SecretSanta\media\serverless_design.png)
+![Serverless solution](serverless_design.png)
 
 Since this is a take home exercise and not a live coding exercise, I can't ask any questions therefore, all the decision need to be done asynchronously.
 I think the initial ask is to implement the REST API satisfying the functional requirements described and also showing good grasp of TDD and clean code principles 
@@ -25,7 +25,7 @@ Extensibility:
 * Monitoring or analytics using Elastic.
 * The system could possibly in the future grow to host a company's secret santa or even more, like a TV/Radio show gift excange.
 
-![](C:\Users\tsaki\GolandProjects\SecretSanta\media\ProposedSystem.jpg)
+![Proposed System](ProposedSystem.jpg)
 
 Proposals for Future Additions in AuthN/AuthZ
 Authentication (AuthN) Enhancements :
