@@ -2,6 +2,7 @@ package rest
 
 import (
 	"SecretSanta/pkg/config"
+	"SecretSanta/pkg/services"
 	"crypto/tls"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/sync/errgroup"
@@ -18,15 +19,25 @@ type REST struct {
 	Routes *gin.RouterGroup
 }
 
-func NewREST(c *config.Config) *REST {
+func NewREST(c *config.Config,
+	service *services.ExchangeService) *REST {
 	engine := gin.New()
 	routes := engine.Group("")
-	engine.Use(
-		gin.Recovery(),
-	)
+
+	memberGroup := routes.Group("/v1")
+	exchangeGroup := routes.Group("/v1")
 
 	// TO-DO : Add logger, prometheous metrics to middleware and use them here.
 	routes.Use()
+
+	routers := RouterGroups{
+		members: memberGroup,
+		excange: exchangeGroup,
+	}
+	NewSantaController(service, c, routers)
+	engine.Use(
+		gin.Recovery(),
+	)
 
 	return &REST{
 		Engine: engine,
@@ -35,6 +46,8 @@ func NewREST(c *config.Config) *REST {
 	}
 }
 
+// TLSconfig: pem files are generated and placed in project folder for this proof of concept.
+// We need to generate new and place them in a safe environment (i.e. a vault/secrets)
 func (r *REST) Run() error {
 	server := http.Server{
 		Addr:              net.JoinHostPort(r.config.Host, r.config.Port),
