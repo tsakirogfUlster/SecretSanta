@@ -114,6 +114,7 @@ func (s *ExchangeService) GetGiftExchange() ([]models.GiftExchange, error) {
 			MemberID:          memberID,
 			RecipientMemberID: recipientID,
 		})
+		//Track history to cover the acceptance criterion
 		s.giftSession.GiftHistory[memberID] = append(s.giftSession.GiftHistory[memberID], recipientID) // Update history
 	}
 
