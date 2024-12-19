@@ -45,7 +45,7 @@ func (s *ExchangeStorage) DeleteMember(id string) {
 	s.Lock()
 	defer s.Unlock()
 	// We could here Check if the member exists. It's good practice to have all the errors thrown in service or storage layer, depending where they are created.
-	//This is to demostrate that we can have the errors in both layers In this example.
+	// Here to keep it simply and consistent I decide to have most of these checks in service layer
 	delete(s.members, id)
 }
 
@@ -63,7 +63,9 @@ func (s *ExchangeStorage) EditMember(id string, updated models.ExchangeMember) e
 	s.Lock()
 	defer s.Unlock()
 	// Update the member data
-	delete(s.members, id)
-	s.members[updated.ID] = updated
+	if _, exists := s.members[id]; exists {
+		delete(s.members, id)
+		s.members[updated.ID] = updated
+	}
 	return nil
 }

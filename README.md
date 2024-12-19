@@ -27,6 +27,11 @@ Extensibility:
 
 ![Proposed System](ProposedSystem.jpg)
 
+Assumptions :
+* Who shuffles? What is a secret santa session? In this case and since there's no separate kick point of a session the system will shuffle anytime some will GET/gift_exchange. This is not thread safe.
+Ideally a secret santa session happens every Xmass or other occasions, happens once and probably any user would like to GET/gift_exchange and get the whole list, or just another interface to GET/gift_exchange:userID to get the pair that should buy a present for.
+* 
+
 Proposals for Future Additions in AuthN/AuthZ
 Authentication (AuthN) Enhancements :
 * Token-Based Authentication:
@@ -46,7 +51,7 @@ Authentication (AuthN) Enhancements :
   Use OAuth2 scopes to define permissions for each token
 
 What is missing from this MVP that need to be added as soon as possible.
-* Extensive Unit test - Apart from the fact that unit tests are crucial to discover issues and confirm that any changes are safe and didn't broke something they are also useful for TDD. Here they are very crucial to enhance profiling tools like go leak, panic parse, pprof etc.
+* Extensive Unit test and Mocks - Apart from the fact that unit tests are crucial to discover issues and confirm that any changes are safe and didn't broke something they are also useful for TDD. Here they are very crucial to enhance profiling tools like go leak, panic parse, pprof etc. There are some but in general I prefer ~100% coverage when I have the time to do it.
 * Validate inputs - all inputs by users needs to be validated. Not only to avoid bad actors that may try (i.e. SQL injection). https://github.com/securego/gosec is good tool to check SQL injection, Hardcoded credentials, missing inputs etc.
 * Extensive System test - There are some basic scenarios just as showcase, there's a need to cover any possible behaviour and added in CI/CD (etc github actions)
 * 
