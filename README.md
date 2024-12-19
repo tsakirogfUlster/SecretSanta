@@ -44,3 +44,9 @@ Authentication (AuthN) Enhancements :
 * Role-Based Access Control, like admins to add/delete members, or someone to be have the right to shuffle
 * Token Scopes and Permissions
   Use OAuth2 scopes to define permissions for each token
+
+What is missing from this MVP that need to be added as soon as possible.
+* Extensive Unit test - Apart from the fact that unit tests are crucial to discover issues and confirm that any changes are safe and didn't broke something they are also useful for TDD. Here they are very crucial to enhance profiling tools like go leak, panic parse, pprof etc.
+* Validate inputs - all inputs by users needs to be validated. Not only to avoid bad actors that may try (i.e. SQL injection). https://github.com/securego/gosec is good tool to check SQL injection, Hardcoded credentials, missing inputs etc.
+* Extensive System test - There are some basic scenarios just as showcase, there's a need to cover any possible behaviour and added in CI/CD (etc github actions)
+* 

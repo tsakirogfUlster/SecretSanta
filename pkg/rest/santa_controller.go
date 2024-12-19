@@ -34,7 +34,7 @@ func NewSantaController(
 	router.members.POST("/members", c.AddMember)
 	router.members.PUT("/members/:id", c.EditMember)
 	router.members.DELETE("/members/:id", c.DeleteMember)
-	//router.excange.GET("/gift_exchange/", c.GetGiftExchange)
+	router.excange.GET("/gift_exchange/", c.GetGiftExchange)
 
 	return c
 }

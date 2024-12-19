@@ -1,17 +1,24 @@
 package services
 
 import (
+	"SecretSanta/pkg/helpers"
 	"SecretSanta/pkg/models"
 	"SecretSanta/pkg/storage"
+	"errors"
+	"math/rand"
 )
 
 type ExchangeService struct {
-	store *storage.ExchangeStorage
+	store       *storage.ExchangeStorage
+	giftSession *models.GiftExchangeSession
 }
 
 func NewExchangeService() *ExchangeService {
 	return &ExchangeService{
-		store: storage.GetStorage(), // Shared storage
+		store: storage.GetStorage(),
+		giftSession: &models.GiftExchangeSession{
+			GiftHistory: make(map[string][]string),
+		},
 	}
 }
 
@@ -64,4 +71,51 @@ func (s *ExchangeService) EditMember(id string, updated models.ExchangeMember) e
 	}
 
 	return nil
+}
+
+func (s *ExchangeService) GetGiftExchange() ([]models.GiftExchange, error) {
+	// Retrieve members
+	members := s.ListMembers()
+	if len(members) < 2 {
+		return nil, errors.New("at least two members are required for a gift exchange")
+	}
+
+	// Prepare data for gift assignment
+	memberIDs := make([]string, 0, len(members))
+	for id := range members {
+		memberIDs = append(memberIDs, id)
+	}
+
+	rand.Shuffle(len(memberIDs), func(i, j int) {
+		memberIDs[i], memberIDs[j] = memberIDs[j], memberIDs[i]
+	})
+
+	// Assign recipients
+	assignments := make([]models.GiftExchange, 0, len(memberIDs))
+	used := make(map[string]bool) // Tracks assigned recipients
+	for i, memberID := range memberIDs {
+		recipientID := ""
+		for j := 0; j < len(memberIDs); j++ {
+			potentialRecipient := memberIDs[(i+j+1)%len(memberIDs)] // Avoid self-gifting
+			if !used[potentialRecipient] &&
+				potentialRecipient != memberID &&
+				!helpers.Contains(s.giftSession.GiftHistory[memberID], potentialRecipient) {
+				recipientID = potentialRecipient
+				break
+			}
+		}
+
+		if recipientID == "" {
+			return nil, errors.New("unable to assign gift recipients under the current constraints")
+		}
+
+		used[recipientID] = true
+		assignments = append(assignments, models.GiftExchange{
+			MemberID:          memberID,
+			RecipientMemberID: recipientID,
+		})
+		s.giftSession.GiftHistory[memberID] = append(s.giftSession.GiftHistory[memberID], recipientID) // Update history
+	}
+
+	return assignments, nil
 }

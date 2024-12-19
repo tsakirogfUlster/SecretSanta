@@ -63,6 +63,7 @@ func (s *ExchangeStorage) EditMember(id string, updated models.ExchangeMember) e
 	s.Lock()
 	defer s.Unlock()
 	// Update the member data
-	s.members[id] = updated
+	delete(s.members, id)
+	s.members[updated.ID] = updated
 	return nil
 }
